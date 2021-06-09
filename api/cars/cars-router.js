@@ -20,6 +20,19 @@ router.get('/:id', checkCarId, (req, res, next) => {
     res.status(200).json(req.car);
 })
 
+router.post(
+    '/', 
+    checkCarPayload, 
+    checkVinNumberValid, 
+    checkVinNumberUnique, 
+    (req, res, next) => {
+        Cars.create(req.body)
+            .then(newCar => {
+                res.status(201).json(newCar)
+            })
+            .catch(next)
+})
+
 router.use((err, req, res, next) => {
     res.status(err.status || 500).json({
       custom: 'something in the app blew up',
